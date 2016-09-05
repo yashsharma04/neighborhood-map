@@ -2,10 +2,12 @@
 <html>
   <head>
     <title>Simple Map</title>
-    <link rel="stylesheet" href="css/material.min.css">
-	<script src="js/material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/semantic.css">
+	<script src="js/semantic.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta name="viewport" content="initial-scale=1.0">
+    
     <meta charset="utf-8">
     <style>
       html, body {
@@ -16,37 +18,79 @@
       #map {
         height: 100%;
       }
-      #search{
-
-    /*  	position: absolute;
-      	z-index: 3 ;*/
+      .pos{
       	top: 10%;
       	left: 3%;
       	z-index: 3 ;
-      	position: absolute;
+      	position: absolute !important;
+
       	background: white ;
       }
+      
     </style>
+    <script>
+    	function change()
+    	{
+    		var e = document.getElementById("addr");
+			var strUser = e.options[e.selectedIndex].text;
+
+    		if (strUser=='Search'){
+       			 //do nothing 
+    		}     
+   		 	else{
+	        	// alert(strUser);
+	        	document.getElementById('val').value = strUser;
+   		 	}  
+    	}
+	    $('.ui.search.dropdown').dropdown();		
+    </script>
   </head>
   <body>
     <div id="map"></div>
-    <form id='search' action="#">
-  		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    		<input class="mdl-textfield__input" placeholder ='Search' type="text" id="sample3">
-    		<label class="mdl-textfield__label" for="sample3"></label>
-  		</div>
-	</form>
+    <div class='pos'>
+		<div class="ui input">
+		  <input id ='val' type="text" placeholder="Search...">
+		</div>
+		<select id ='addr' class="ui search dropdown" onchange="change()">
+		<option value="">Search</option>
+		<option value="AL">Alabama</option>
+		<option value="AK">Alaska</option>
+		<option value="AZ">Arizona</option>
+		<option value="LA">Louisiana</option>
+		<option value="ME">Maine</option>
+		<option value="MD">Maryland</option>
+		<option value="WY">Wyoming</option>
+		</select>	
+    </div>
+    
 
     <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
+      function initAutocomplete() {
+		  var map = new google.maps.Map(document.getElementById('map'), {
+		    center: {lat: -33.8688, lng: 151.2195},
+		    zoom: 13,
+		    mapTypeId: 'roadmap'
+		  });
+
+		  // Create the search box and link it to the UI element.
+		  var input = document.getElementById('val');
+		  var searchBox = new google.maps.places.SearchBox(input);
+		  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+		  // Bias the SearchBox results towards current map's viewport.
+		  map.addListener('bounds_changed', function() {
+		    searchBox.setBounds(map.getBounds());
+		  });
+
+		  var markers = [];
+		  // Listen for the event fired when the user selects a prediction and retrieve
+		  // more details for that place.
+
+		}
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCurnTnlIrgXmgKlo111d9YDtHMJqOeKEs&callback=initMap"
-    async defer></script>
+   <!--  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCurnTnlIrgXmgKlo111d9YDtHMJqOeKEs&libraries=places&callback=initMap"
+    async defer></script> -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCurnTnlIrgXmgKlo111d9YDtHMJqOeKEs&libraries=places&callback=initAutocomplete" async defer </script>
+
   </body>
 </html>
