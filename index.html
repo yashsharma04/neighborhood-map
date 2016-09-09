@@ -69,48 +69,44 @@
       #target {
         width: 345px;
       }
+      .btn{
+      	bottom: 5%;
+        right: 3%;
+        z-index: 4 ;
+        position: absolute !important;
+        color :	black;
+        background-color:#A2C4EA !important;
+
+      }
     </style>
     <script>
 
-	      $(document).ready(function(){
-		      	
-
-
-	      });
-    	  function change()
-	      {
-	        var e = document.getElementById("addr");
-	      	var strUser = e.options[e.selectedIndex].text;
-
-	        if (strUser=='Search'){
-	             //do nothing 
-	        }     
-	        else{
-	            // alert(strUser);
-	            document.getElementById('pac-input').value = strUser;
-	        }  
-	      }
 	      $('.ui.search.dropdown').dropdown();  
 
     </script>
   </head>
   <body>
     
-    <div id="map"></div>
-    <div class='pos'>
-    <div class="ui input">
-      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div id="map">
+    	
     </div>
-    <select id ='addr' class="ui search dropdown" onchange="change()">
-    <option value="">Search</option>
-    <option value="AL">Alabama</option>
-    <option value="AK">Alaska</option>
-    <option value="AZ">Arizona</option>
-    <option value="LA">Louisiana</option>
-    <option value="ME">Maine</option>
-    <option value="MD">Maryland</option>
-    <option value="WY">Wyoming</option>
-    </select> 
+    <div class='pos'>
+	    <div class="ui input">
+	      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+	    </div>
+	    <select id ='addr' class="ui search dropdown" onchange="change()">
+	    <option value="">Search</option>
+	    <option value="AL">Alabama</option>
+	    <option value="AK">Alaska</option>
+	    <option value="AZ">Arizona</option>
+	    <option value="LA">Louisiana</option>
+	    <option value="ME">Maine</option>
+	    <option value="MD">Maryland</option>
+	    <option value="WY">Wyoming</option>
+	    </select> 
+    </div>
+    <div id='reset'>
+    	<button class='ui button btn'>Reset Zoom</button>
     </div>
     <script>
       // This example adds a search box to a map, using the Google Place Autocomplete
@@ -128,6 +124,10 @@
           mapTypeId: 'roadmap'
         });
 
+        $('#reset').click(function()
+        	{
+        		map.setZoom(8);
+        	});
         // Create the search box and link it to the UI element.
         var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
@@ -285,7 +285,24 @@
           map.fitBounds(bounds);
         });
       }
-     
+     function change()
+	      {
+	        var e = document.getElementById("addr");
+	      	var strUser = e.options[e.selectedIndex].text;
+
+	        if (strUser=='Search'){
+	             //do nothing 
+	        }     
+	        else{
+	            // alert(strUser);
+	            document.getElementById('pac-input').value = strUser;
+	            // $('#pac-input').trigger("keypress", [13]); 
+	            // alert('hello');
+	            var e = jQuery.Event("keypress", { keyCode: 13 }); // you can specify your desired key code 
+     			$('#pac-input').trigger(e);
+
+	        }  
+	      }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCurnTnlIrgXmgKlo111d9YDtHMJqOeKEs&libraries=places&callback=initAutocomplete"
          async defer></script>
