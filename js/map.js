@@ -16,6 +16,8 @@
         var searchBox = new google.maps.places.SearchBox(input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
+
+
         // Bias the SearchBox results towards current map's viewport.
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
@@ -37,7 +39,26 @@
 			    marker.setAnimation(google.maps.Animation.BOUNCE);
 			  }
 			}
+			var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+            'Aboriginal people of the area. It has many springs, waterholes, '+
+            'rock caves and ancient paintings. Uluru is listed as a World '+
+            'Heritage Site.</p>'+
+            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+            '(last visited June 22, 2009).</p>'+
+            '</div>'+
+            '</div>';
 
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
 		 	var address = 'atlanta';
 		    geocoder.geocode( { 'address': address}, function(results, status) {
 		      if (status == 'OK') {
@@ -50,6 +71,9 @@
 		        });
 
 		        marker.addListener('mouseover', toggleBounce);
+				marker.addListener('click', function() {
+		          infowindow.open(map, marker);
+		        });
 
 		      } else {
 		        alert('Geocode was not successful for the following reason: ' + status);
