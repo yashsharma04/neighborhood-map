@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <title>Simple Map</title>
+    <title>Simple Map</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/semantic.css">
-  <script src="js/semantic.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  	<script src="js/semantic.js"></script>
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta name="viewport" content="initial-scale=1.0">
-    <title>Places Searchbox</title>
-
+    <title>Places Searchbox</title> 
     <style>
-
       .pos{
         top: 10%;
         left: 3%;
@@ -73,6 +71,12 @@
       }
     </style>
     <script>
+
+	      $(document).ready(function(){
+		      	
+
+
+	      });
     	  function change()
 	      {
 	        var e = document.getElementById("addr");
@@ -120,7 +124,7 @@
       function initAutocomplete() {
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -33.8688, lng: 151.2195},
-          zoom: 13,
+          zoom: 8,
           mapTypeId: 'roadmap'
         });
 
@@ -133,6 +137,104 @@
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
         });
+
+        // marking places everytime 
+        geocoder = new google.maps.Geocoder();
+			// var address = document.getElementById('address').value;
+
+			function toggleBounce() 
+			{
+			  // alert('hello');
+			  if (marker.getAnimation() !== null) 
+			  {
+			    marker.setAnimation(null);
+			  }
+			  else 
+			  {
+			    marker.setAnimation(google.maps.Animation.BOUNCE);
+			  }
+			}
+
+		 	var address = 'atlanta';
+		    geocoder.geocode( { 'address': address}, function(results, status) {
+		      if (status == 'OK') {
+		        map.setCenter(results[0].geometry.location);
+		        marker = new google.maps.Marker({
+		            map: map,
+		            draggable :true ,
+		            animation: google.maps.Animation.DROP,
+		            position: results[0].geometry.location
+		        });
+
+		        marker.addListener('mouseover', toggleBounce);
+
+		      } else {
+		        alert('Geocode was not successful for the following reason: ' + status);
+		      }
+		    });
+		    // var address = 'Alaska';
+		    // geocoder.geocode( { 'address': address}, function(results, status) {
+		    //   if (status == 'OK') {
+		    //     map.setCenter(results[0].geometry.location);
+		    //     var marker = new google.maps.Marker({
+		    //         map: map,
+		    //         position: results[0].geometry.location
+		    //     });
+		    //   } else {
+		    //     alert('Geocode was not successful for the following reason: ' + status);
+		    //   }
+		    // });
+		    // var address = 'Arizona';
+		    // geocoder.geocode( { 'address': address}, function(results, status) {
+		    //   if (status == 'OK') {
+		    //     map.setCenter(results[0].geometry.location);
+		    //     var marker = new google.maps.Marker({
+		    //         map: map,
+		    //         position: results[0].geometry.location
+		    //     });
+		    //   } else {
+		    //     alert('Geocode was not successful for the following reason: ' + status);
+		    //   }
+		    // });
+		    // var address = 'Louisiana';
+		    // geocoder.geocode( { 'address': address}, function(results, status) {
+		    //   if (status == 'OK') {
+		    //     map.setCenter(results[0].geometry.location);
+		    //     var marker = new google.maps.Marker({
+		    //         map: map,
+		    //         position: results[0].geometry.location
+		    //     });
+		    //   } else {
+		    //     alert('Geocode was not successful for the following reason: ' + status);
+		    //   }
+		    // });
+		    // var address = 'columbus';
+		    // geocoder.geocode( { 'address': address}, function(results, status) {
+		    //   if (status == 'OK') {
+		    //     map.setCenter(results[0].geometry.location);
+		    //     var marker = new google.maps.Marker({
+		    //         map: map,
+		    //         position: results[0].geometry.location
+		    //     });
+		    //   } else {
+		    //     alert('Geocode was not successful for the following reason: ' + status);
+		    //   }
+		    // });
+		    // var address = 'atlanta';
+		    // geocoder.geocode( { 'address': address}, function(results, status) {
+		    //   if (status == 'OK') {
+		    //     map.setCenter(results[0].geometry.location);
+		    //     var marker = new google.maps.Marker({
+		    //         map: map,
+		    //         position: results[0].geometry.location
+		    //     });
+		    //   } else {
+		    //     alert('Geocode was not successful for the following reason: ' + status);
+		    //   }
+		    // });
+
+
+
 
         var markers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
@@ -189,4 +291,3 @@
          async defer></script>
   </body>
 </html>
-
